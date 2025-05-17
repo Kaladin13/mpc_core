@@ -1,0 +1,75 @@
+[package]
+name = "mpc_http_client"
+version = "0.3.0"
+edition = "2021"
+rust-version = "1.60.0"
+description = "HTTP client for secure multi-party computation"
+license = "MIT"
+categories = ["cryptography", "command-line-utilities"]
+keywords = [
+    "crypto",
+    "secure-computation",
+    "garbled-circuits",
+    "circuit-description",
+    "mpc",
+]
+
+
+[[bin]]
+name = "mpc_http_client"
+path = "src/main.rs"
+required-features = ["bin"] # to avoid wasm-pack trying to build main.rs
+
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+bench = false
+
+[features]
+default = ["console_error_panic_hook"]
+bin = []
+
+[dependencies]
+mpc_core = { version = "0.3.0", path = "../mpc_core" }
+url = "2.5"
+rand_chacha = "0.3.1"
+bincode = "1.3"
+getrandom = { version = "0.2", features = ["js"] }
+serde = { version = "1.0", features = ["derive"] }
+serde-wasm-bindgen = "0.6"
+serde_json = "1.0"
+reqwest = { version = "0.12", features = ["json"] }
+mpc_garble_interop = { version = "0.3.0", path = "../mpc_garble_interop" }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { version = "1", features = ["full"] }
+clap = { version = "4.5", features = ["derive"] }
+anyhow = "1.0"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
+wasm-bindgen-futures = "0.4"
+console_error_panic_hook = { version = "0.1", optional = true }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+rand = "0.9.1"
+assert_cmd = "2.0"
+predicates = "3.1"
+criterion = { version = "0.5", features = ["async_tokio"] }
+
+[target.'cfg(target_arch = "wasm32")'.dev-dependencies]
+wasm-bindgen-test = "0.3"
+console_log = "1.0"
+js-sys = "0.3"
+
+[[bench]]
+name = "multiplications"
+harness = false
+
+[[bench]]
+name = "credit_scoring"
+harness = false
+
+[[bench]]
+name = "circuits"
+harness = false

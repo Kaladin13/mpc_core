@@ -1,0 +1,36 @@
+[package]
+name = "mpc_core"
+version = "0.3.0"
+edition = "2021"
+rust-version = "1.60.0"
+description = "Core library for secure multi-party computation"
+license = "MIT"
+
+[dependencies]
+rand_core = "0.6.4"
+rand_chacha = "0.3.1"
+blake3 = { version = "1.5.5", features = ["traits-preview"] }
+curve25519-dalek-ng = "4.1.1"
+serde = "1.0"
+bincode = "1.3"
+
+[dev-dependencies]
+mpc_garble_interop = { version = "0.3.0", path = "../mpc_garble_interop" }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "multiplications"
+harness = false
+
+[[bench]]
+name = "credit_scoring"
+harness = false
+
+[[bench]]
+name = "circuits"
+harness = false
+
+[lib]
+bench = false

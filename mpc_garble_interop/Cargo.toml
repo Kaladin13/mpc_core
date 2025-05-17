@@ -1,0 +1,22 @@
+[package]
+name = "mpc_garble_interop"
+version = "0.3.0"
+edition = "2021"
+rust-version = "1.60.0"
+description = "Interopability between secure multi-party computation and the Garble programming language"
+license = "MIT"
+categories = ["cryptography"]
+keywords = [
+    "crypto",
+    "secure-computation",
+    "garbled-circuits",
+    "circuit-description",
+    "mpc",
+]
+
+[dependencies]
+mpc_core = { version = "0.3.0", path = "../mpc_core" }
+garble_lang = { version = "0.5.0", features = ["serde"] }
+
+[lib]
+bench = false

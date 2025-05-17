@@ -1,0 +1,9 @@
+[workspace]
+    resolver = "2"
+
+members = [
+    "mpc_core",
+    "mpc_http_server",
+    "mpc_http_client",
+    "mpc_garble_interop",
+]
