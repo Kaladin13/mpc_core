@@ -1,8 +1,7 @@
 use curve25519_dalek_ng::constants::RISTRETTO_BASEPOINT_TABLE;
 use curve25519_dalek_ng::ristretto::RistrettoPoint;
 use curve25519_dalek_ng::scalar::Scalar;
-use rand_core::{RngCore, CryptoRng, SeedableRng};
-use rand_chacha::ChaCha20Rng;
+use rand_core::{RngCore, CryptoRng};
 
 pub(crate) const MSG_LEN: usize = 32;
 

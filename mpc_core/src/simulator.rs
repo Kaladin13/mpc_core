@@ -4,7 +4,7 @@ use crate::{
     states::{Contributor, Evaluator},
     Circuit, Error,
 };
-use rand_core::{RngCore, SeedableRng};
+use rand_core::SeedableRng;
 use rand_chacha::ChaCha20Rng;
 
 /// Simulates the local execution of the circuit using a 2-party secure computation protocol.

@@ -4,9 +4,7 @@ use crate::{
     types::{Delta, KeyType, MacType, K},
 };
 use rand_core::{RngCore, SeedableRng};
-use rand_core::CryptoRng;
 use rand_chacha::ChaCha20Rng;
-use serde::{Deserialize, Serialize};
 
 pub(crate) const BLOCK_SIZE: usize = K;
 

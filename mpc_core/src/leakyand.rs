@@ -3,8 +3,6 @@ use crate::{
     hash::hash,
     types::{Delta, KeyType, MacType, K},
 };
-use rand_core::{RngCore, SeedableRng};
-use rand_chacha::ChaCha20Rng;
 
 pub(crate) type AndHashes = [[MacType; 2]];
 

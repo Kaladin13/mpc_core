@@ -1,7 +1,6 @@
 //! Non-optimized hashing based on [`blake3::Hasher`].
 use std::io::Read;
 
-use blake3::OutputReader;
 
 use crate::types::{KeyType, MacType};
 
