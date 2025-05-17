@@ -6,13 +6,13 @@ use rand_core::RngCore;
 use serde::{Deserialize, Serialize};
 
 /// The number bits of computational security.
-pub(crate) const K: usize = SecurityBits::BITS as usize;
+pub const K: usize = SecurityBits::BITS as usize;
 
-pub(crate) type SecurityBits = u128;
+pub type SecurityBits = u128;
 
 /// MAC data type underlying authenticated bits etc.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub(crate) struct MacType(pub(crate) SecurityBits);
+pub struct MacType(pub SecurityBits);
 
 impl BitXor<u128> for MacType {
     type Output = MacType;
@@ -32,7 +32,7 @@ impl BitXor<MacType> for MacType {
 
 /// Data type of Keys underlying authenticated bits etc.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub(crate) struct KeyType(pub(crate) SecurityBits);
+pub struct KeyType(pub SecurityBits);
 
 impl BitXor<u128> for KeyType {
     type Output = Self;
@@ -85,27 +85,27 @@ pub(crate) type InputMaskShare = (u32, PartialBitShare);
 ///
 /// The mac relates to the bit {bit} while the {key} relates to the bit given to the other party.
 #[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-pub(crate) struct BitShare {
+pub struct BitShare {
     /// MAC key used for other party's bit.
-    pub(crate) key: KeyType,
+    pub key: KeyType,
     /// MAC for this bit.
-    pub(crate) mac: MacType,
+    pub mac: MacType,
     /// The actual bit i.e. value of this authenticated bit.
-    pub(crate) bit: bool,
-}
-
-/// A partial bit share; used for disclosing one's authenticated bit.
-#[derive(Default, Debug, Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub(crate) struct PartialBitShare {
-    /// The authenticated bit's MAC.
-    pub(crate) mac: MacType,
-    /// The authenticated bit's value.
-    pub(crate) bit: bool,
+    pub bit: bool,
 }
 
 /// Random bitmask used to construct AND gate table shares.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
-pub(crate) struct WireLabel(pub(crate) SecurityBits);
+pub struct WireLabel(pub SecurityBits);
+
+/// A partial bit share; used for disclosing one's authenticated bit.
+#[derive(Default, Debug, Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PartialBitShare {
+    /// The authenticated bit's MAC.
+    pub mac: MacType,
+    /// The authenticated bit's value.
+    pub bit: bool,
+}
 
 /// The processing node-global hiding key.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
