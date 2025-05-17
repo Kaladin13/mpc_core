@@ -1,7 +1,18 @@
 //! Secure Multi-Party Computation (SMPC) using Garbled Circuits for 2 parties.
 //!
-//! This crate can be used to securely compute functions specified as boolean circuits (using AND,
-//! XOR and NOT gates) without revealing the inputs of either party to the other party.
+//! This crate implements secure two-party computation based on Yao's Garbled Circuits protocol (1986).
+//! It allows two parties to jointly compute functions over their private inputs without revealing
+//! the inputs to each other. The implementation follows the semi-honest security model.
+//!
+//! # Architecture
+//!
+//! The implementation is structured into several key components:
+//! 
+//! - Circuit representation and manipulation (`circuit.rs`)
+//! - Cryptographic primitives and hashing (`hash.rs`)
+//! - Oblivious Transfer protocols (`ot_base.rs`, `leakydelta_ot.rs`)
+//! - Core protocol implementation (`protocol.rs`)
+//! - State machine for protocol execution (`states.rs`)
 //!
 //! Communication channels are deliberately _not_ part of this crate. The sending and receiving of
 //! messages needs to be handled by the user of this crate, which allows the protocol to be used
