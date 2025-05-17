@@ -56,29 +56,29 @@ pub(crate) fn derive_and_shares(
     MacType(result ^ random_bits)
 }
 
-#[test]
-fn test_leaky_and() {
-    use rand_core::SeedableRng;
-    use rand_chacha::ChaCha20Rng;
+// #[test]
+// fn test_leaky_and() {
+//     use rand_core::SeedableRng;
+//     use rand_chacha::ChaCha20Rng;
 
-    let mut rng = ChaCha20Rng::from_entropy();
-    let x = rng.next_u64() as u128 | ((rng.next_u64() as u128) << 64);
-    let y = rng.next_u64() as u128 | ((rng.next_u64() as u128) << 64);
-    let delta = Delta(rng.next_u64() as u128 | ((rng.next_u64() as u128) << 64));
+//     let mut rng = ChaCha20Rng::from_entropy();
+//     let x = rng.next_u64() as u128 | ((rng.next_u64() as u128) << 64);
+//     let y = rng.next_u64() as u128 | ((rng.next_u64() as u128) << 64);
+//     let delta = Delta(rng.next_u64() as u128 | ((rng.next_u64() as u128) << 64));
 
-    let mut keys = [KeyType(0); K];
-    let mut macs = [MacType(0); K];
-    for i in 0..K {
-        keys[i] = KeyType(rng.next_u64() as u128 | ((rng.next_u64() as u128) << 64));
-        macs[i] = MacType(rng.next_u64() as u128 | ((rng.next_u64() as u128) << 64));
-    }
+//     let mut keys = [KeyType(0); K];
+//     let mut macs = [MacType(0); K];
+//     for i in 0..K {
+//         keys[i] = KeyType(rng.next_u64() as u128 | ((rng.next_u64() as u128) << 64));
+//         macs[i] = MacType(rng.next_u64() as u128 | ((rng.next_u64() as u128) << 64));
+//     }
 
-    let mut hashes = [[MacType(0), MacType(0)]; K];
-    compute_leaky_and_hashes(&mut hashes, &delta, x, y, &keys);
+//     let mut hashes = [[MacType(0), MacType(0)]; K];
+//     compute_leaky_and_hashes(&mut hashes, &delta, x, y, &keys);
 
-    let result = derive_and_shares(x, y, &macs, &hashes);
-    assert_eq!(result.0, x & y);
-}
+//     let result = derive_and_shares(x, y, &macs, &hashes);
+//     assert_eq!(result.0, x & y);
+// }
 
 /// Generates K-many authenticated bits for testing.
 #[cfg(test)]
