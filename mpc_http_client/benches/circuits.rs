@@ -77,7 +77,7 @@ fn compute_circuit(source: &str, gates: &str, num_gates: u16, c: &mut Criterion)
 
     common::with_server("./benches/circuits_setup", |connection_string| {
         let bench_id = format!(
-            "{} gates tandem_http_client {num_gates}",
+            "{} gates mpc_http_client {num_gates}",
             gates.to_uppercase()
         );
         c.bench_function(&bench_id, |b| {

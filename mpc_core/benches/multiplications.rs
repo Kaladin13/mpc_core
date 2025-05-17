@@ -28,7 +28,7 @@ fn mul(num_mul: u64, garble_prg: &str, c: &mut Criterion) {
 
     println!("Circuit has {}", circuit.info_about_gates);
 
-    let bench_id = format!("mul_{num_mul} tandem");
+    let bench_id = format!("mul_{num_mul} mpc");
 
     c.bench_function(&bench_id, |b| {
         b.iter(|| mpc_core::simulate(&circuit.gates, &input_a, &input_b).unwrap())

@@ -1,6 +1,6 @@
 #![cfg(target_arch = "wasm32")]
 
-use tandem_http_client::{compute, MpcData, MpcProgram};
+use mpc_http_client::{compute, MpcData, MpcProgram};
 use wasm_bindgen_test::wasm_bindgen_test;
 
 #[cfg(target_arch = "wasm32")]

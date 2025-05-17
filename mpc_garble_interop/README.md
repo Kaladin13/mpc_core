@@ -129,32 +129,6 @@ cargo test --test optimize
 cargo bench
 ```
 
-## Contributing
-
-When working on the garble interop layer:
-
-1. Add tests for new SFDL features
-2. Document optimization passes
-3. Maintain backward compatibility
-4. Consider circuit size implications
-
-## Circuit Optimization Guidelines
-
-1. Gate Reduction
-   - Minimize AND gates
-   - Utilize free XOR gates
-   - Remove redundant gates
-
-2. Depth Optimization
-   - Balance circuit depth
-   - Parallelize when possible
-   - Consider evaluation cost
-
-3. Memory Usage
-   - Optimize wire numbering
-   - Minimize temporary storage
-   - Consider memory locality
-
 ## References
 
 1. Yao, A. C. (1986). How to generate and exchange secrets.

@@ -2,15 +2,15 @@ use assert_cmd::prelude::CommandCargoExt;
 use rand::{thread_rng, Rng};
 use std::process::{Child, Command, Stdio};
 
-const SERVER_CRATE: &str = "tandem_http_server";
+const SERVER_CRATE: &str = "mpc_http_server";
 
 pub fn compile_server() {
-    println!("Compiling tandem_http_server, this might take a few minutes");
+    println!("Compiling mpc_http_server, this might take a few minutes");
     Command::new("cargo")
         .arg("build")
         .arg("--features=bin")
         .arg("--release")
-        .current_dir("../tandem_http_server")
+        .current_dir("../mpc_http_server")
         .stdout(Stdio::inherit())
         .stderr(Stdio::inherit())
         .output()
@@ -59,7 +59,7 @@ fn stop_server(mut c: Child) -> Result<(), Box<dyn std::error::Error>> {
 struct StartTimeoutError {}
 impl std::fmt::Display for StartTimeoutError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str("Timeout while strating Tandem HTTP Server")
+        f.write_str("Timeout while strating mpc HTTP Server")
     }
 }
 

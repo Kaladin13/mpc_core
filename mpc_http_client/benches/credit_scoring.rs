@@ -26,7 +26,7 @@ fn credit_scoring_benchmark(c: &mut Criterion) {
     println!("Circuit has {}", program.report_gates());
 
     common::with_server("./tests/credit_scoring_setup", |connection_string| {
-        c.bench_function("credit scoring tandem_http_client", |b| {
+        c.bench_function("credit scoring mpc_http_client", |b| {
             b.to_async(tokio::runtime::Runtime::new().unwrap())
                 .iter(|| async {
                     let user_input = MpcData::from_string(&program, USER.to_string()).unwrap();

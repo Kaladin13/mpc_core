@@ -26,7 +26,7 @@ fn credit_scoring_benchmark(c: &mut Criterion) {
 
     let user_input = serialize_input(Role::Evaluator, &typed_prg, &circuit.fn_def, USER).unwrap();
 
-    c.bench_function("credit scoring tandem", |b| {
+    c.bench_function("credit scoring mpc", |b| {
         b.iter(|| {
             mpc_core::simulate(&circuit.gates, &credit_scorer_input, &user_input).unwrap();
         })

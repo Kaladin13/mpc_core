@@ -92,7 +92,7 @@ fn test_protocol_xor_and() {
             let EngineCreationResult { engine_id, .. } = r1.into_json().unwrap();
             let prg = check_program(&program).unwrap();
             let TypedCircuit { gates, fn_def, .. } = compile_program(&prg, "main").unwrap();
-            let result = tandem_http_protocol(client, &engine_id, gates, vec![input_party_b]);
+            let result = mpc_http_protocol(client, &engine_id, gates, vec![input_party_b]);
             let const_sizes = HashMap::new();
             let result = deserialize_output(&prg, &fn_def, &result)
                 .unwrap()
@@ -111,7 +111,7 @@ fn test_protocol_xor_and() {
 /// runs protocol with upstream
 ///
 /// assumes upstream session was already created
-fn tandem_http_protocol(
+fn mpc_http_protocol(
     client: &Client,
     engine_id: &String,
     program: Circuit,

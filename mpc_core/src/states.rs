@@ -193,7 +193,7 @@ impl<C: Borrow<Circuit>, I: Borrow<[bool]>> Evaluator<C, I> {
     }
 }
 
-type TandemResult<S> = Result<(S, Msg), Error>;
+type mpcResult<S> = Result<(S, Msg), Error>;
 
 enum ContribState {
     Step1(ContribStep1),
@@ -423,7 +423,7 @@ impl ContribStep1 {
 }
 
 impl EvalStep1 {
-    fn run(mut self, msg: &[u8], circuit: &Circuit) -> TandemResult<EvalStep2> {
+    fn run(mut self, msg: &[u8], circuit: &Circuit) -> mpcResult<EvalStep2> {
         let (state, reply1) = init_ot1(Delta::gen_random(&mut self.0.rng), self.0.rng, circuit)?;
         let (state, reply2) = init_ot2(state, msg)?;
         let reply = serialize(&(reply1, reply2))?;
@@ -432,7 +432,7 @@ impl EvalStep1 {
 }
 
 impl ContribStep1 {
-    fn run(self, msg: &[u8]) -> TandemResult<ContribStep1a> {
+    fn run(self, msg: &[u8]) -> mpcResult<ContribStep1a> {
         let (msg1, msg2): (Msg, Msg) = deserialize(msg)?;
         let (state, reply1) = init_ot2(self.0, &msg1)?;
         let (state, reply2) = init_ot3(state, &msg2)?;
@@ -442,7 +442,7 @@ impl ContribStep1 {
 }
 
 impl EvalStep2 {
-    fn run(self, msg: &[u8]) -> TandemResult<EvalStep2a> {
+    fn run(self, msg: &[u8]) -> mpcResult<EvalStep2a> {
         let (msg1, msg2): (Msg, Msg) = deserialize(msg)?;
         let (state, reply1) = init_ot3(self.0, &msg1)?;
         let (state, reply2) = init_ot4(state, msg2)?;
@@ -452,7 +452,7 @@ impl EvalStep2 {
 }
 
 impl ContribStep1a {
-    fn run(self, msg: &[u8], circuit: &Circuit) -> TandemResult<ContribStep2> {
+    fn run(self, msg: &[u8], circuit: &Circuit) -> mpcResult<ContribStep2> {
         let (msg1, msg2): (Msg, Msg) = deserialize(msg)?;
         let (state, reply1) = init_ot4(self.0, msg1)?;
         let (state, reply2) = ot_ands1(state, &msg2, circuit)?;
@@ -462,7 +462,7 @@ impl ContribStep1a {
 }
 
 impl EvalStep2a {
-    fn run(self, msg: &[u8], circuit: &Circuit) -> TandemResult<EvalStep3> {
+    fn run(self, msg: &[u8], circuit: &Circuit) -> mpcResult<EvalStep3> {
         let (msg1, msg2): (Msg, Msg) = deserialize(msg)?;
         let (state, reply) = ot_ands1(self.0, &msg1, circuit)?;
 
@@ -486,7 +486,7 @@ impl EvalStep2a {
 
 impl ContribStep2 {
     // Implements Step 2 of `Π_{LaAND}` of WRK17a
-    fn run(self, msg: &[u8]) -> TandemResult<ContribStep3> {
+    fn run(self, msg: &[u8]) -> mpcResult<ContribStep3> {
         let and_hashes: Vec<[MacType; 2]> = deserialize(msg)?;
         let state = self.0;
         let and_shares = state.compute_and_shares(&and_hashes, Role::Contributor)?;
@@ -508,7 +508,7 @@ impl ContribStep2 {
 
 /// Receives its message from [`ContribStep2`] which is a (large) vector of `AND` shares.
 impl EvalStep3 {
-    fn run(self, msg: &[u8]) -> TandemResult<EvalStep4> {
+    fn run(self, msg: &[u8]) -> mpcResult<EvalStep4> {
         let (state, replies) = ot_ands3_update_z2_eval(self.0, msg)?;
         let reply = serialize(&replies)?;
         Ok((EvalStep4(state), reply))
@@ -516,7 +516,7 @@ impl EvalStep3 {
 }
 
 impl ContribStep3 {
-    fn run(self, msg: &[u8]) -> TandemResult<ContribStep4> {
+    fn run(self, msg: &[u8]) -> mpcResult<ContribStep4> {
         let (msg1, msg2): (Msg, Msg) = deserialize(msg)?;
         let (state, reply1) = ot_ands3_update_z2_contrib(self.0, &msg1)?;
         let (state, reply2) = ot_ands4(state, &msg2)?;
@@ -526,7 +526,7 @@ impl ContribStep3 {
 }
 
 impl EvalStep4 {
-    fn run(self, msg: &[u8]) -> TandemResult<EvalStep5> {
+    fn run(self, msg: &[u8]) -> mpcResult<EvalStep5> {
         let (msg1, msg2): (Msg, Msg) = deserialize(msg)?;
         let (state, reply1) = ot_ands4(self.0, &msg1)?;
         let (state, reply2) = ot_ands5(state, &msg2)?;
@@ -536,7 +536,7 @@ impl EvalStep4 {
 }
 
 impl ContribStep4 {
-    fn run(self, msg: &[u8], circuit: &Circuit) -> TandemResult<AndsBucketingState> {
+    fn run(self, msg: &[u8], circuit: &Circuit) -> mpcResult<AndsBucketingState> {
         let (msg1, msg2): (Msg, Msg) = deserialize(msg)?;
         let (state, reply1) = ot_ands5(self.0, &msg1)?;
         let (state, reply2) = ot_ands6(state, &msg2, circuit)?;
@@ -546,7 +546,7 @@ impl ContribStep4 {
 }
 
 impl EvalStep5 {
-    fn run(self, msg: &[u8], circuit: &Circuit) -> TandemResult<EvalStep6> {
+    fn run(self, msg: &[u8], circuit: &Circuit) -> mpcResult<EvalStep6> {
         let (msg1, msg2): (Msg, Msg) = deserialize(msg)?;
         let (state, reply1) = ot_ands6(self.0, &msg1, circuit)?;
         let (state, reply2) = state.finish(&msg2, circuit)?;
@@ -557,7 +557,7 @@ impl EvalStep5 {
 }
 
 impl ContribBucketingStep {
-    fn run(self, msg: &[u8], circuit: &Circuit, input: &[bool]) -> TandemResult<InputProcContrib> {
+    fn run(self, msg: &[u8], circuit: &Circuit, input: &[bool]) -> mpcResult<InputProcContrib> {
         let (msg1, msg2): (Msg, Msg) = deserialize(msg)?;
         let (state, reply1) = self.0.finish(&msg1, circuit)?;
         let (state, reply2) = ot_ands8_contrib(state, &msg2, circuit, input)?;
@@ -568,7 +568,7 @@ impl ContribBucketingStep {
 }
 
 impl EvalStep6 {
-    fn run(self, msg: &[u8], circuit: &Circuit, input: &[bool]) -> TandemResult<InputProcEval> {
+    fn run(self, msg: &[u8], circuit: &Circuit, input: &[bool]) -> mpcResult<InputProcEval> {
         let (msg1, msg2): (Msg, Msg) = deserialize(msg)?;
         let (state, reply) = ot_ands8_eval(self.0, &msg1, &msg2, circuit, input)?;
         Ok((state, reply))
@@ -1628,7 +1628,7 @@ fn compute_hashes(
 }
 
 impl InputProcContrib {
-    fn run(mut self, msg: &[u8], circuit: &Circuit, input: &[bool]) -> TandemResult<()> {
+    fn run(mut self, msg: &[u8], circuit: &Circuit, input: &[bool]) -> mpcResult<()> {
         // P_B sends its mask to P_A which then returns masked input plus label to P_B for final
         // circuit evaluation
         let (shares, inputs): (Vec<InputMaskShare>, Vec<(u32, bool)>) = deserialize(msg)?;
@@ -1680,7 +1680,7 @@ impl InputProcContrib {
 }
 
 impl InputProcEval {
-    fn run(mut self, msg: &[u8], circuit: &Circuit) -> TandemResult<Vec<bool>> {
+    fn run(mut self, msg: &[u8], circuit: &Circuit) -> mpcResult<Vec<bool>> {
         let (inputs, shares): (Vec<(u32, WireLabel, bool)>, Vec<InputMaskShare>) =
             deserialize(msg)?;
         for (index, label, masked_value) in inputs {

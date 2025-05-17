@@ -3,7 +3,7 @@
 use std::include_str;
 
 use js_sys::Reflect;
-use tandem_http_client::{compute, MpcData, MpcProgram};
+use mpc_http_client::{compute, MpcData, MpcProgram};
 use wasm_bindgen::JsValue;
 use wasm_bindgen_test::wasm_bindgen_test;
 

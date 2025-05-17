@@ -40,7 +40,7 @@ fn compute_circuit(source: &str, num_mul: u64, c: &mut Criterion) {
     println!("Circuit has {}", program.report_gates());
 
     common::with_server("./benches/multiplications_setup", |connection_string| {
-        let bench_id = format!("mul_{num_mul} tandem_http_client");
+        let bench_id = format!("mul_{num_mul} mpc_http_client");
 
         c.bench_function(&bench_id, |b| {
             b.to_async(tokio::runtime::Runtime::new().unwrap())

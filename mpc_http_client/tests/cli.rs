@@ -5,8 +5,8 @@ use predicates::prelude::*; // Used for writing assertions
 use rand::{prelude::*, random, thread_rng};
 use std::process::{Child, Command, Stdio}; // Run programs
 
-const CRATE_NAME: &str = "tandem_http_client";
-const SERVER_CRATE: &str = "tandem_http_server";
+const CRATE_NAME: &str = "mpc_http_client";
+const SERVER_CRATE: &str = "mpc_http_server";
 const SERVER_URL: &str = "http://localhost:8000";
 
 #[test]
@@ -113,7 +113,7 @@ fn new_command(
 
 fn start_server() -> Result<(Child, String), Box<dyn std::error::Error>> {
     if cfg!(not(tarpaulin)) {
-        println!("Compiling tandem_http_server, this might take a few minutes");
+        println!("Compiling mpc_http_server, this might take a few minutes");
         Command::new("cargo")
             .arg("build")
             .arg("--features=bin")
@@ -163,7 +163,7 @@ where
 struct StartTimeoutError {}
 impl std::fmt::Display for StartTimeoutError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str("Timeout while strating tandem_http_server")
+        f.write_str("Timeout while strating mpc_http_server")
     }
 }
 

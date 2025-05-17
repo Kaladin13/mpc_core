@@ -5,8 +5,8 @@ use figment::{
     Figment,
 };
 use serde::Deserialize;
-use tandem_garble_interop::{check_program, compile_program, serialize_input, Role};
-use tandem_http_server::{build, MpcRequest, MpcSession};
+use mpc_garble_interop::{check_program, compile_program, serialize_input, Role};
+use mpc_http_server::{build, MpcRequest, MpcSession};
 
 use std::{env, iter::zip};
 
@@ -32,9 +32,9 @@ fn rocket() -> _ {
 
     let default = HashMap::<ProgramFilePath, HashMap<PlaintextMetadata, OwnInput>>::new();
     let config: HandlerConfig = Figment::from(("handlers", default))
-        .merge(Json::file("Tandem.json"))
-        .merge(Toml::file("Tandem.toml"))
-        .merge(Env::prefixed("TANDEM_"))
+        .merge(Json::file("mpc.json"))
+        .merge(Toml::file("mpc.toml"))
+        .merge(Env::prefixed("mpc_"))
         .extract()
         .unwrap();
 

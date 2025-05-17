@@ -1,6 +1,6 @@
-# fly.toml file generated for tandem-echo-server on 2022-11-09T17:26:11Z
+# fly.toml file generated for mpc-echo-server on 2022-11-09T17:26:11Z
 
-app = "tandem-echo-server"
+app = "mpc-echo-server"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []

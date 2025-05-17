@@ -3,7 +3,7 @@
 use anyhow::Context;
 use clap::Parser;
 use std::{io::Read, path::PathBuf};
-use tandem_http_client::{compute, MpcData, MpcProgram};
+use mpc_http_client::{compute, MpcData, MpcProgram};
 
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
@@ -21,7 +21,7 @@ struct Cli {
     #[arg(
         long,
         default_value = "https://echo-server.sine.dev",
-        help = "Base URL of a remote tandem http server. "
+        help = "Base URL of a remote mpc http server. "
     )]
     url: url::Url,
 

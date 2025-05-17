@@ -18,7 +18,7 @@ use crate::{
 /// reference to a (running) Engine
 pub(crate) struct EngineRef {
     last_durably_received_client_event_offset: Option<MessageId>,
-    tandem: Option<Contributor<Circuit, Vec<bool>>>,
+    mpc: Option<Contributor<Circuit, Vec<bool>>>,
     steps_remaining: u32,
     context: MsgQueue,
 }
@@ -32,7 +32,7 @@ impl EngineRef {
 
         Ok(Self {
             context,
-            tandem: Some(contrib),
+            mpc: Some(contrib),
             steps_remaining,
             last_durably_received_client_event_offset: None,
         })
@@ -43,9 +43,9 @@ impl EngineRef {
             || self.last_durably_received_client_event_offset == Some(offset - 1)
         {
             self.last_durably_received_client_event_offset = Some(offset);
-            if let Some(contrib) = self.tandem.take() {
+            if let Some(contrib) = self.mpc.take() {
                 let (next_state, reply) = contrib.run(msg)?;
-                self.tandem = Some(next_state);
+                self.mpc = Some(next_state);
                 self.context.send(reply);
             }
             Ok(())
