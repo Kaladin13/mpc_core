@@ -6,7 +6,7 @@ use rand::{prelude::*, random, thread_rng};
 use std::process::{Child, Command, Stdio}; // Run programs
 
 const CRATE_NAME: &str = "mpc_http_client";
-const SERVER_CRATE: &str = "mpc_http_server";
+const SERVER_CRATE: &str = "mpc_server";
 const SERVER_URL: &str = "http://localhost:8000";
 
 #[test]
@@ -56,6 +56,9 @@ fn integration_test_and() -> Result<(), Box<dyn std::error::Error>> {
                 &format!("{party_a}u8"),
                 &format!("{party_b}u8"),
             )?;
+
+            print!("{} + {} = ", party_a, party_b);
+            print!("{:?}", cmd.output().unwrap());
 
             if party_a as u16 + party_b as u16 > u8::MAX as u16 {
                 cmd.assert()

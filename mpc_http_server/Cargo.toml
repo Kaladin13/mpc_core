@@ -18,6 +18,7 @@ keywords = [
 mpc_core = { version = "0.3.0", path = "../mpc_core" }
 rocket = { version = "0.5.0", features = ["json"] }
 rand = "0.9.1"
+rand_core = "0.6.4"
 rand_chacha = "0.3.1"
 bincode = "1.3"
 serde_json = "1.0"

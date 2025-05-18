@@ -8,7 +8,7 @@ use crate::{
     types::{EngineCreationResult, HandleMpcRequestFn},
 };
 use rand::Rng;
-use rand_chacha::{rand_core::SeedableRng, ChaCha20Rng};
+use rand_chacha::{rand_core::{SeedableRng, RngCore}, ChaCha20Rng};
 use rocket::{
     data::ToByteUnit,
     fairing::{AdHoc, Fairing, Info, Kind},
@@ -52,7 +52,25 @@ pub(crate) fn create_session(
     }
 
     let mut rng = ChaCha20Rng::from_entropy();
-    let engine_id = uuid::Builder::from_random_bytes(rng.gen()).into_uuid();
+    let random_bytes = [
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+        rng.next_u64() as u8,
+    ];
+    let engine_id = uuid::Builder::from_random_bytes(random_bytes).into_uuid();
     let engine_id = engine_id.to_string();
     let er = Arc::new(Mutex::new(EngineRef::new(
         rng,

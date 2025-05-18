@@ -30,6 +30,7 @@ default = ["console_error_panic_hook"]
 bin = []
 
 [dependencies]
+rand_core = "0.6.4"
 mpc_core = { version = "0.3.0", path = "../mpc_core" }
 url = "2.5"
 rand_chacha = "0.3.1"
